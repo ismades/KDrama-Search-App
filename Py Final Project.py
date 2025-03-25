@@ -1,9 +1,3 @@
-
-"""
-Created on Wed Jan  1 19:28:06 2025
-
-@author: user
-"""
 import mysql.connector
 import tkinter as tk
 def hub():
@@ -58,15 +52,20 @@ def log():
     if username == "" or password == "":
         label_hasil.config(text="Error!Username dan Password Harus diisi!")
         return
+
     cursor = conn.cursor()
-    query = "SELECT* FROM users WHERE Username = '"+username+"' AND Password = '"+password+"'"
-    cursor.execute(query)
+    query = "SELECT * FROM users WHERE Username = %s AND Password = %s"
+    cursor.execute(query, (username, password))
+    
     hasil =  cursor.fetchone()
     
     if hasil:
         id_user = hasil[0]
         label_hasil.config(text = f"Login Berhasil ,Selamat Datang 😊 {username}")
-        tampilkan_menu()
+        tampilkan_menu() 
+    else:
+        label_hasil.config(text="Username atau Paword Tidak Sesuasi.")
+       
         
 def tampilkan_menu_utama():    
      sembunyikan_semua() 
@@ -274,3 +273,4 @@ tombol_login.pack(pady=5)
 tombol_regis.pack(pady=5)
 
 root.mainloop()
+
